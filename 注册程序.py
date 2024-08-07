@@ -17,7 +17,7 @@ def choose():
 
 def login():
     m=3
-    while True:
+    while m!=0:
         with open("密码存储.json", 'r', encoding='UTF-8') as f:
             file=json.load(f)
         print('你还有',m,'次机会')
@@ -26,18 +26,14 @@ def login():
         k=0
         for i in range(len(file["user"])):
             if a==file['user'][i] and b==file['pwd'][i]:
-                k=1
-        if k==1:
-            print('登陆成功!')
-            break
-        else:
-            print('错误!')
-            m-=1
-            if m==0:
-                print('系统已被锁定!请联系管理员以解锁!')
-                with open("锁定程序.json", 'w', encoding='UTF-8') as f:
-                    json.dump({'result': 'True'}, f)
+                print('登陆成功!')
                 break
+            else:
+                print('错误!')
+                m-=1
+    print('系统已被锁定!请联系管理员以解锁!')
+    with open("锁定程序.json", 'w', encoding='UTF-8') as f:
+        json.dump({'result': 'True'}, f)
 def modify_user():
     m = 3
     while True:
@@ -143,8 +139,7 @@ def modify_user():
                 break
 
 def add_user():
-    a=check_admin()
-    if a==1:
+    if check_admin():
         a = input('请输入用户名称')
         b = input('请输入用户密码')
         with open("密码存储.json", 'r', encoding='UTF-8') as f:
@@ -160,15 +155,13 @@ def check_admin():
         file=json.load(f)
     a = input('请输入管理员名称')
     b = input('请输入管理员密码')
-    k = 0
     for i in range(len(file["user"])):
         if a == file['user'][i] and b == file['pwd'][i]:
-            k = 1
-    if k == 1:
-        print('验证成功!')
-    else:
-        print('错误!')
-    return k
+            print('验证成功!')
+            return True
+        else:
+            print('错误!')
+            return False
 
 
 
